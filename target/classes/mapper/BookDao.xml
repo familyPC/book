@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+    
+<mapper namespace="com.library.dao.BookDao">
+	<select id="queryById" parameterType="long" resultType="BOOK">
+		select book_id,name,introd,amount
+		from book
+		where book_id = #{bookId}  
+	</select>
+	<select id="querySome" resultType="BOOK">
+		select book_id,name ,introd,amount from book
+		where name  = #{name} 
+	</select>
+	<select id="queryAll" resultType="BOOK">
+
+		select * from (
+				select A.*,rownum rn from 
+			
+					(select * from  book) A
+					
+						where rownum &lt;= #{maxNum}
+						
+						)
+						where RN  &gt;= #{minNum}
+						
+	</select>
+	<update id="reduceAmount" >
+		update 
+			book
+		set 
+			amount = (amount - 1)
+		where 
+			book_id=#{bookId}
+		and amount &gt;0	
+	
+	</update>
+
+</mapper>
+
